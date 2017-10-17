@@ -26,7 +26,7 @@ router.post('/get-address', function (req, res) {
 		function (error, response, body) {
 		//	console.log(json_decode(body.result));
 			if (!error && response.statusCode == 200) {
-				return res.status(200).json({result: JSON.parse(body)});
+				return res.status(200).json(JSON.parse(body));
 			} else {
 				res.status(500).json({result: error});
 			}
@@ -60,7 +60,7 @@ router.post('/get-route', function (req, res) {
 		  function (error, response, body) {
 		  //	console.log(json_decode(body.result));
 			  if (!error && response.statusCode == 200) {
-				  return res.status(200).json({result: JSON.parse(body)});
+				  return res.status(200).json(JSON.parse(body));
 			  } else {
 				  res.status(500).json({result: error});
 			  }
@@ -92,7 +92,7 @@ router.post('/get-route', function (req, res) {
 		  function (error, response, body) {
 		  //	console.log(json_decode(body.result));
 			  if (!error && response.statusCode == 200) {
-				  return res.status(200).json({result: JSON.parse(body)});
+				  return res.status(200).json(JSON.parse(body));
 			  } else {
 				  res.status(500).json({result: error});
 			  }
