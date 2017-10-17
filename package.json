@@ -1,0 +1,20 @@
+{
+  "name": "rkdemo",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "dependencies": {
+    "body-parser": "~1.15.1",
+    "cookie-parser": "~1.4.3",
+    "cors": "^2.8.1",
+    "express": "4.15.2",
+    "express-validator": "3.2.0",
+    "pg": "^7.3.0",
+    "prom-client": "^10.1.0",
+    "q": "1.4.1",
+    "request": "^2.79.0",
+    "response-time": "^2.3.2"
+  }
+}
