@@ -1,9 +1,14 @@
 var express = require('express');
 var request = require('request');
+var path = require('path');
+var bodyParser = require('body-parser');
+var multer = require('multer');
+var upload = multer();
 var router = express.Router();
 var util = require('util');
 var app = require('../config/app');
 var db = require('../config/database')
+var appExpress = express();
 
 
 router.post('/get-address', function (req, res) {
@@ -101,6 +106,41 @@ router.post('/get-route', function (req, res) {
   
   });
 
+appExpress.use(express.static(__dirname + '../views'));
+router.get('/', function (req, res) {
+	 
+	//console.log(__dirname  )
+	res.sendFile(path.join(__dirname+'/../views/form.html'));
+   //__dirname : It will resolve to your project folder.
+});
+
+router.post('/', function (req, res) {
+	
+   //console.log(__dirname  )
+   console.log(process.env.ADDRESS);
+   if (req.body != undefined) {
+		process.env['ADDRESS'] = (req.body.address !== undefined ? 1 : '');
+		process.env['ROUTE'] = (req.body.route !== undefined ? 1 : '');
+		process.env['LOCATION'] = (req.body.location !== undefined ? 1 : '');
+		
+   }
+
+   console.log(process.env.ADDRESS);
+   console.log(process.env.ROUTE);
+   console.log(process.env.LOCATION);
+   res.sendFile(path.join(__dirname+'/../views/form.html'));
+  //__dirname : It will resolve to your project folder.
+});
+
+  /*
+router.get('/', function(req, res){
+	console.log("dsfjl")
+	res.render('form');
+});
+
+appExpress.set('view engine', 'pug');
+appExpress.set('views', './views');
+*/
 
 
 function requestBodyValidatorPoint(req){
