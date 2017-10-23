@@ -1,3 +1,4 @@
+require('dotenv').config()
 var express = require('express');
 var request = require('request');
 var path = require('path');
@@ -24,7 +25,11 @@ router.post('/get-address', function (req, res) {
     	return res.status(400).json({status: false, message: "failed", result: errors});
 	}
 
-	var address = req.body.address;
+	var address = "";
+
+	if (process.env.ADDRESS == 1) {
+		address = req.body.address;
+	}
 
 	request.get(
 		globalJs.urls().googleMapApi + 'geocode/json?address=' + address + '&sensor=false&units=metric&mode=driving',
@@ -53,12 +58,17 @@ router.post('/get-route', function (req, res) {
 		  return res.status(400).json({status: false, message: "failed", result: errors});
 	  }
   
-	  var start_lat = req.body.start_lat;
-	  var start_lon = req.body.start_lon;
-	  var end_lat = req.body.end_lat;
-	  var end_lon = req.body.end_lon;
-	  var origin = start_lat + ',' + start_lon;
-	  var destination = end_lat + ',' + end_lon;
+	  var origin = "";
+	  var destination = "";
+
+	  if (process.env.ROUTE == 1) {
+		var start_lat = req.body.start_lat;
+		var start_lon = req.body.start_lon;
+		var end_lat = req.body.end_lat;
+		var end_lon = req.body.end_lon;
+		origin = start_lat + ',' + start_lon;
+		destination = end_lat + ',' + end_lon;
+	  }
   
 	  request.get(
 		  globalJs.urls().googleMapApi + 'directions/json?origin=' + origin + '&destination='+ destination  + '&sensor=false&units=metric&mode=driving',
@@ -88,9 +98,12 @@ router.post('/get-route', function (req, res) {
 		  return res.status(400).json({status: false, message: "failed", result: errors});
 	  }
   
-	  var start_lat = req.body.start_lat;
-	  var start_lon = req.body.start_lon;
-	  var origin = start_lat + ',' + start_lon;
+	  var origin = ""
+	  if (process.env.LOCATION == 1) {
+		var start_lat = req.body.start_lat;
+		var start_lon = req.body.start_lon;
+		origin = start_lat + ',' + start_lon;
+	  }
 
 	  request.get(
 		globalJs.urls().googleMapApi + 'geocode/json?address=' + origin + '&sensor=false&units=metric&mode=driving',
@@ -103,12 +116,11 @@ router.post('/get-route', function (req, res) {
 			  }
 		  }
 	  );
-  
   });
 
-appExpress.use(express.static(__dirname + '../views'));
+ /*appExpress.use(express.static(__dirname + '../views'));
 router.get('/', function (req, res) {
-	 
+	console.log(process.env.ADDRESS);
 	//console.log(__dirname  )
 	res.sendFile(path.join(__dirname+'/../views/form.html'));
    //__dirname : It will resolve to your project folder.
@@ -116,7 +128,7 @@ router.get('/', function (req, res) {
 
 router.post('/', function (req, res) {
 	
-   //console.log(__dirname  )
+   //console.log(process.env.ADDRESS)
    console.log(process.env.ADDRESS);
    if (req.body != undefined) {
 		process.env['ADDRESS'] = (req.body.address !== undefined ? 1 : '');
@@ -132,7 +144,7 @@ router.post('/', function (req, res) {
   //__dirname : It will resolve to your project folder.
 });
 
-  /*
+ 
 router.get('/', function(req, res){
 	console.log("dsfjl")
 	res.render('form');
